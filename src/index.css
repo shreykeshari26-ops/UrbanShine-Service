@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --color-primary-50: #F3FAFD;
+  --color-primary-100: #E8F4FB;
+  --color-primary-200: #CBE4F5;
+  --color-primary-300: #A2CEEB;
+  --color-primary-400: #74B2DF;
+  --color-primary-500: #4FA8D8;
+  --color-primary-600: #358BBE;
+  --color-primary-700: #2C6F9A;
+  
+  --color-accent-50: #F0F9F5;
+  --color-accent-100: #DCF0E7;
+  --color-accent-200: #BCE0D0;
+  --color-accent-300: #7FC8A9;
+  --color-accent-400: #5BB28D;
+  --color-accent-500: #429572;
+  --color-accent-600: #2F7659;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply text-slate-800 antialiased bg-white;
+  }
+}
+
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+    opacity: 0;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
