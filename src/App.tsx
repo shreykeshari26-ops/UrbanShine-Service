@@ -1,35 +1,27 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar.tsx';
-import Hero from './components/Hero.tsx';
-import TrustBar from './components/TrustBar.tsx';
-import Services from './components/Services.tsx';
-import Pricing from './components/Pricing.tsx';
-import BeforeAfter from './components/BeforeAfter.tsx';
-import Testimonials from './components/Testimonials.tsx';
-import CTABanner from './components/CTABanner.tsx';
-import About from './components/About.tsx';
-import Contact from './components/Contact.tsx';
 import Footer from './components/Footer.tsx';
 import FloatingButtons from './components/FloatingButtons.tsx';
+import Home from './pages/Home.tsx';
+import ServiceDetails from './pages/ServiceDetails.tsx';
 
 function App() {
   return (
-    <div className="min-h-screen bg-white">
-      <Navbar />
-      <main>
-        <Hero />
-        <TrustBar />
-        <Services />
-        <Pricing />
-        <BeforeAfter />
-        <Testimonials />
-        <CTABanner />
-        <About />
-        <Contact />
-      </main>
-      <Footer />
-      <FloatingButtons />
-    </div>
+    <BrowserRouter>
+      <div className="min-h-screen bg-white flex flex-col">
+        <Navbar />
+        <div className="flex-grow">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/services/:id" element={<ServiceDetails />} />
+          </Routes>
+        </div>
+        <Footer />
+        <FloatingButtons />
+      </div>
+    </BrowserRouter>
   );
 }
 
 export default App;
+
