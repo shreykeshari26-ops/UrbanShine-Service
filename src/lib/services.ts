@@ -1,4 +1,4 @@
-export type ServiceCategory = 'Commercial Services' | 'Domestic Services' | 'Specialized Pressure Services';
+export type ServiceCategory = 'Commercial Services' | 'Residential Services' | 'Specialized Pressure Services';
 
 export interface ServiceItem {
   id: string;
@@ -105,10 +105,10 @@ export const servicesData: ServiceItem[] = [
     mockPricing: 'Starting from $0.10 / sq ft',
   },
 
-  // Domestic Services
+  // Residential Services
   {
     id: 'move-in-out',
-    category: 'Domestic Services',
+    category: 'Residential Services',
     title: 'Move-In/Move-Out Deep Clean',
     shortDescription: 'Get your full deposit back or step into a spotless new home. We handle the heavy lifting.',
     fullDescription: 'Transitioning between homes is stressful enough. Let us handle the cleaning. We ensure the property you are leaving is spotless for the next occupants, or the new home you are moving into is perfectly sanitized and fresh.',
@@ -123,7 +123,7 @@ export const servicesData: ServiceItem[] = [
   },
   {
     id: 'recurring-home',
-    category: 'Domestic Services',
+    category: 'Residential Services',
     title: 'Recurring Premium Home Upkeep',
     shortDescription: 'Standard cleaning to keep your home fresh, tidy, and welcoming week after week.',
     fullDescription: 'Enjoy a consistently clean home with our recurring service. Available weekly, bi-weekly, or monthly, this service covers all the essential cleaning tasks to keep your living space comfortable and pristine.',
@@ -139,7 +139,7 @@ export const servicesData: ServiceItem[] = [
   },
   {
     id: 'carpet-sofa',
-    category: 'Domestic Services',
+    category: 'Residential Services',
     title: 'Carpet & Sofa Deep Shampooing',
     shortDescription: 'Revitalize your carpets and upholstery with deep extraction that removes stains and odors.',
     fullDescription: 'Breathe new life into your fabrics. Our deep shampooing and hot water extraction process removes embedded dirt, stubborn stains, allergens, and pet odors from carpets, rugs, and upholstered furniture.',
@@ -154,7 +154,7 @@ export const servicesData: ServiceItem[] = [
   },
   {
     id: 'luxury-villa',
-    category: 'Domestic Services',
+    category: 'Residential Services',
     title: 'Luxury Villa Care',
     shortDescription: 'Meticulous, white-glove cleaning tailored for expansive and high-end residential properties.',
     fullDescription: 'Our Luxury Villa Care service provides elite, discreet, and highly detailed cleaning for premium properties. We handle delicate surfaces, high-end appliances, and expensive fixtures with the utmost care and specialized products.',
@@ -169,7 +169,7 @@ export const servicesData: ServiceItem[] = [
   },
   {
     id: 'window-glass',
-    category: 'Domestic Services',
+    category: 'Residential Services',
     title: 'Window & Glass Detailing',
     shortDescription: 'Crystal clear, streak-free window cleaning for interior and exterior glass surfaces.',
     fullDescription: 'Let the light in with our professional window detailing. We remove dirt, smudges, hard water stains, and grime from all your glass surfaces, ensuring a perfectly clear and sparkling view.',
@@ -187,6 +187,7 @@ export const servicesData: ServiceItem[] = [
   {
     id: 'exterior-jet-washing',
     category: 'Specialized Pressure Services',
+
     title: 'High-PSI Exterior Jet Washing',
     shortDescription: 'Powerful pressure washing to restore driveways, patios, and exterior walls.',
     fullDescription: 'Eradicate years of built-up grime, mold, mildew, and dirt from your property\'s exterior. Our high-PSI jet washing restores concrete, brick, stone, and siding to their original brilliance.',

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Menu, X, Sparkles, ChevronDown } from 'lucide-react';
+import { Menu, X, Sparkles, ChevronDown, ChevronRight } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { servicesData, type ServiceCategory } from '../lib/services';
 import { cn } from '../lib/utils';
@@ -7,7 +7,7 @@ import { cn } from '../lib/utils';
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [isServicesDropdownOpen, setIsServicesDropdownOpen] = useState(false);
   const [activeMobileAccordion, setActiveMobileAccordion] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
@@ -24,7 +24,7 @@ export default function Navbar() {
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setActiveDropdown(null);
+        setIsServicesDropdownOpen(false);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
@@ -34,18 +34,14 @@ export default function Navbar() {
   // Close mobile menu on route change
   useEffect(() => {
     setIsMobileMenuOpen(false);
-    setActiveDropdown(null);
+    setIsServicesDropdownOpen(false);
   }, [location.pathname]);
 
   const categories: ServiceCategory[] = [
     'Commercial Services',
-    'Domestic Services',
+    'Residential Services',
     'Specialized Pressure Services'
   ];
-
-  const handleDropdownEnter = (category: string) => {
-    setActiveDropdown(category);
-  };
 
   const toggleMobileAccordion = (category: string) => {
     setActiveMobileAccordion(prev => prev === category ? null : category);
@@ -76,52 +72,59 @@ export default function Navbar() {
               Home
             </Link>
             
-            {/* Dropdowns */}
-            {categories.map((category) => (
-              <div 
-                key={category} 
-                className="relative"
-                onMouseEnter={() => handleDropdownEnter(category)}
-                onMouseLeave={() => setActiveDropdown(null)}
-              >
-                <button 
-                  className={cn(
-                    "flex items-center gap-1 text-slate-600 hover:text-primary-600 font-semibold px-3 py-6 -my-4 transition-colors",
-                    activeDropdown === category && "text-primary-600"
-                  )}
-                >
-                  {category.split(' ')[0]}
-                  <ChevronDown className={cn("w-4 h-4 transition-transform duration-200", activeDropdown === category && "rotate-180")} />
-                </button>
-                
-                {/* Dropdown Panel */}
-                {activeDropdown === category && (
-                  <div className="absolute top-full left-1/2 -translate-x-1/2 w-80 bg-white shadow-xl rounded-2xl border border-slate-100 py-4 mt-2 animate-fade-in origin-top">
-                    <div className="absolute -top-2 left-0 right-0 h-4 bg-transparent" /> {/* Hover bridge */}
-                    <div className="px-6 pb-2 mb-2 border-b border-slate-50">
-                      <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider">{category}</h4>
-                    </div>
-                    <ul className="flex flex-col">
-                      {servicesData.filter(s => s.category === category).map(service => (
-                        <li key={service.id}>
-                          <Link 
-                            to={`/services/${service.id}`}
-                            className="block px-6 py-3 hover:bg-slate-50 transition-colors text-slate-700 hover:text-primary-600 font-medium text-sm group"
-                          >
-                            <span className="group-hover:translate-x-1 inline-block transition-transform duration-200">
-                              {service.title}
-                            </span>
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+            {/* Single Services Dropdown */}
+            <div 
+              className="relative"
+              onMouseEnter={() => setIsServicesDropdownOpen(true)}
+              onMouseLeave={() => setIsServicesDropdownOpen(false)}
+            >
+              <button 
+                className={cn(
+                  "flex items-center gap-1 text-slate-600 hover:text-primary-600 font-semibold px-3 py-6 -my-4 transition-colors",
+                  isServicesDropdownOpen && "text-primary-600"
                 )}
-              </div>
-            ))}
+              >
+                Services
+                <ChevronDown className={cn("w-4 h-4 transition-transform duration-200", isServicesDropdownOpen && "rotate-180")} />
+              </button>
+              
+              {/* Dropdown Panel - Mega Menu Style */}
+              {isServicesDropdownOpen && (
+                <div className="absolute top-full left-1/2 -translate-x-1/2 w-[800px] bg-white shadow-xl rounded-2xl border border-slate-100 py-6 px-8 mt-2 animate-fade-in origin-top flex gap-8">
+                  <div className="absolute -top-2 left-0 right-0 h-4 bg-transparent" /> {/* Hover bridge */}
+                  
+                  {categories.map((category) => (
+                    <div key={category} className="flex-1">
+                      <h4 className="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2 mb-4 uppercase tracking-wider">{category.split(' ')[0]}</h4>
+                      <ul className="flex flex-col gap-1">
+                        {servicesData.filter(s => s.category === category).map(service => (
+                          <li key={service.id}>
+                            <Link 
+                              to={`/services/${service.id}`}
+                              className="group flex items-start gap-2 py-2 text-slate-600 hover:text-primary-600 font-medium text-sm transition-colors"
+                            >
+                              <ChevronRight className="w-4 h-4 mt-0.5 opacity-0 group-hover:opacity-100 -ml-4 group-hover:ml-0 transition-all text-primary-500 flex-shrink-0" />
+                              <span className="group-hover:translate-x-1 transition-transform duration-200">
+                                {service.title}
+                              </span>
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
 
             <Link to="/#pricing" className="text-slate-600 hover:text-primary-600 font-semibold px-3 py-2 transition-colors">
               Pricing
+            </Link>
+            <Link to="/#about" className="text-slate-600 hover:text-primary-600 font-semibold px-3 py-2 transition-colors">
+              About
+            </Link>
+            <Link to="/#contact" className="text-slate-600 hover:text-primary-600 font-semibold px-3 py-2 transition-colors">
+              Contact Us
             </Link>
             
             <Link 
@@ -145,43 +148,48 @@ export default function Navbar() {
 
       {/* Mobile Nav Accordion Drawer */}
       <div className={cn(
-        "fixed inset-0 top-[72px] bg-white z-40 transition-transform duration-300 ease-in-out md:hidden overflow-y-auto border-t border-slate-100",
-        isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
+        "absolute top-full left-0 right-0 bg-white z-40 transition-all duration-300 ease-in-out md:hidden border-t border-slate-100 overflow-hidden shadow-lg",
+        isMobileMenuOpen ? "max-h-[calc(100vh-70px)] opacity-100 border-b" : "max-h-0 opacity-0 border-transparent"
       )}>
-        <div className="px-6 py-8 flex flex-col gap-2 min-h-full pb-32">
+        <div className="px-6 py-6 flex flex-col gap-1 max-h-[calc(100vh-70px)] overflow-y-auto pb-24">
           <Link to="/" className="text-xl font-bold text-slate-800 py-3 border-b border-slate-100" onClick={() => setIsMobileMenuOpen(false)}>
             Home
           </Link>
           
-          {categories.map((category) => (
-            <div key={category} className="border-b border-slate-100">
-              <button 
-                onClick={() => toggleMobileAccordion(category)}
-                className="w-full flex items-center justify-between text-xl font-bold text-slate-800 py-4"
-              >
-                {category}
-                <ChevronDown className={cn("w-5 h-5 transition-transform duration-300 text-slate-400", activeMobileAccordion === category && "rotate-180 text-primary-600")} />
-              </button>
-              
-              <div className={cn(
-                "overflow-hidden transition-all duration-300 ease-in-out",
-                activeMobileAccordion === category ? "max-h-[800px] opacity-100 pb-4" : "max-h-0 opacity-0"
-              )}>
-                <ul className="flex flex-col gap-2 pl-4 border-l-2 border-primary-100 mt-2">
-                  {servicesData.filter(s => s.category === category).map(service => (
-                    <li key={service.id}>
-                      <Link 
-                        to={`/services/${service.id}`}
-                        className="block py-2 text-slate-600 hover:text-primary-600 font-medium"
-                      >
-                        {service.title}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+          <div className="border-b border-slate-100 py-2">
+            <span className="text-xl font-bold text-slate-800 py-2 block">Services</span>
+            <div className="pl-4 mt-2 flex flex-col gap-2">
+              {categories.map((category) => (
+                <div key={category} className="bg-slate-50 rounded-xl overflow-hidden mb-2">
+                  <button 
+                    onClick={() => toggleMobileAccordion(category)}
+                    className="w-full flex items-center justify-between font-bold text-slate-700 p-4"
+                  >
+                    {category}
+                    <ChevronDown className={cn("w-5 h-5 transition-transform duration-300 text-slate-400", activeMobileAccordion === category && "rotate-180 text-primary-600")} />
+                  </button>
+                  
+                  <div className={cn(
+                    "overflow-hidden transition-all duration-300 ease-in-out bg-white",
+                    activeMobileAccordion === category ? "max-h-[800px] opacity-100" : "max-h-0 opacity-0"
+                  )}>
+                    <ul className="flex flex-col border-l-2 border-primary-100 ml-4 mb-4 mt-1">
+                      {servicesData.filter(s => s.category === category).map(service => (
+                        <li key={service.id}>
+                          <Link 
+                            to={`/services/${service.id}`}
+                            className="block py-2.5 px-4 text-slate-600 hover:text-primary-600 font-medium text-sm"
+                          >
+                            {service.title}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
 
           <Link to="/#pricing" className="text-xl font-bold text-slate-800 py-3 border-b border-slate-100" onClick={() => setIsMobileMenuOpen(false)}>
             Pricing
@@ -204,4 +212,5 @@ export default function Navbar() {
     </header>
   );
 }
+
 
