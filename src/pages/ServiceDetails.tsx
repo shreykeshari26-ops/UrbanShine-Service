@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useParams, Navigate, Link } from 'react-router-dom';
-import { CheckCircle2, ArrowLeft, ShieldCheck, Clock, ThumbsUp, Sparkles, UserCheck } from 'lucide-react';
+import { CheckCircle2, ArrowLeft, ShieldCheck, ThumbsUp, Sparkles, UserCheck } from 'lucide-react';
 import { getServiceById } from '../lib/services';
 
 export default function ServiceDetails() {
